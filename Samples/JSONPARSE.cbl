@@ -1,0 +1,33 @@
+PROGRAM-ID. JSONPARSE.
+SECURITY.
+
+ENVIRONMENT DIVISION.
+CONFIGURATION SECTION.
+SPECIAL-NAMES.
+
+INPUT-OUTPUT SECTION.
+FILE-CONTROL.
+
+DATA DIVISION.
+FILE SECTION.
+
+    WORKING-STORAGE SECTION.
+       01 JSON-DATA PIC X(80) VALUE
+           '{"GRP":{"Ac-No":"SX1234","More":{"Value":[7.8,-9.0]}}}'.
+       01 GRP.
+          05 AC-NO PIC AA9999.
+          05 MORE.
+             10 STUFF PIC S99V9 OCCURS 2.
+          05 SSN PIC 999/99/9999 VALUE '987-65-4321'.
+       01 I BINARY PIC 99.
+       PROCEDURE DIVISION.
+       MAIN.
+           MOVE 7.8 TO STUFF(1), MOVE -9 TO STUFF(2)
+           JSON PARSE JSON-DATA INTO GRP 
+             NAME OF STUFF IS 'Value' SUPPRESS SSN
+           
+           DISPLAY "AC-NO:    " AC-NO.
+           DISPLAY "STUFF(1): " STUFF(1).
+           DISPLAY "STUFF(2): " STUFF(2).
+           
+           GOBACK.
